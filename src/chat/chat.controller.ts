@@ -50,6 +50,7 @@ export class ChatController {
       // 对于非流式响应，可以采用普通JSON方式返回
       console.log(`发起阻塞式请求`, difyQuery);
       const llmResponse = await this.difyChatService.blockingChatMessages(difyQuery, token);
+      response.status(200);
       response.json(llmResponse);
     }
   }
