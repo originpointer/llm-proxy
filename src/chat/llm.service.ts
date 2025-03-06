@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { LLMQueryDto } from './dto/llm-query.dto';
 import { DifyQueryDto } from './dto/dify-query.dto';
+import { get } from 'lodash';
 
 @Injectable()
 export class LLMService {
@@ -12,7 +13,7 @@ export class LLMService {
    */
   transformLLMToDifyQuery(llmQuery: LLMQueryDto, userId: string = 'default-user'): DifyQueryDto {
     // 获取最后一条用户消息作为查询内容
-    const lastUserMessage = llmQuery.messages
+    const lastUserMessage = get(llmQuery, 'messages', [])
       .slice()
       .reverse()
       .find(message => message.role === 'user');

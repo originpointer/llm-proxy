@@ -34,6 +34,8 @@ export class DifyChatService {
         };
 
         try {
+            // 设置状态码为200
+            response.status(200);
             // 设置SSE响应头
             response.setHeader('Content-Type', 'text/event-stream');
             response.setHeader('Cache-Control', 'no-cache');
