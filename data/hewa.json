@@ -1,0 +1,18 @@
+{
+    "id": "chatcmpl-1741227410018",
+    "object": "chat.completion.chunk",
+    "created": 1741227410,
+    "model": "dify-proxy",
+    "choices": [
+        {
+            "delta": {
+                "content": "It"
+            },
+            "index": 0,
+            "finish_reason": null
+        }
+    ],
+    "stream_options": {
+        "include_usage": true
+    }
+}

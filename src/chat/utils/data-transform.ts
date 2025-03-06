@@ -16,9 +16,10 @@ export function convertToOpenAIFormat(difyData) {
                 },
                 index: 0,
                 finish_reason: null,
-                stream_options: { include_usage: true }
+                
             }],
             // 将 stream_options 移到 choices 数组外
+            stream_options: { include_usage: true }
         };
 
         // 如果是第一个消息块，添加 role 字段

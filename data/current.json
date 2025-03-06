@@ -1,0 +1,19 @@
+{
+    "id": "chatcmpl-cdff83d7-d2ca-47f9-ba1f-a6cc3ed72919",
+    "object": "chat.completion.chunk",
+    "created": 1741227652,
+    "model": "dify-proxy",
+    "choices": [
+        {
+            "delta": {
+                "content": "Please",
+                "role": "assistant"
+            },
+            "index": 0,
+            "finish_reason": null,
+            "stream_options": {
+                "include_usage": true
+            }
+        }
+    ]
+}
