@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  app:
+    container_name: llm-proxy
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "10306:3000"
+    environment:
+      - NODE_ENV=production
+      - DIFY_API_URL=https://api.dify.ai
+    restart: always
+    volumes:
+      - ./data:/app/data 
