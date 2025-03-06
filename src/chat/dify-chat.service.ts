@@ -3,7 +3,7 @@ import { DifyQueryDto } from './dto/dify-query.dto';
 import { Observable } from 'rxjs';
 import axios from 'axios';
 import { Response } from 'express';
-import { convertToOpenAIFormat } from './utils/data-transform';
+import { convertBlockingToOpenAiFormat, convertToOpenAIFormat } from './utils/data-transform';
 
 @Injectable()
 export class DifyChatService {
@@ -159,5 +159,46 @@ export class DifyChatService {
                 response.end();
             }
         }
+    }
+
+    async blockingChatMessages(difyQuery: DifyQueryDto, apiKey?: string): Promise<any> {
+        const usedApiKey = apiKey || this.difyApiKey;
+
+        if (!usedApiKey) {
+            this.logger.error('未提供Dify API密钥');
+            throw new Error('服务器配置错误: 缺少API密钥');
+            // response.status(500).json({ error: '服务器配置错误: 缺少API密钥' });
+            return;
+        }
+
+        // 准备请求头
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${usedApiKey}`
+        };
+
+        const requestUrl = `${this.difyApiUrl}/v1/chat-messages`;
+
+        const difyQueryData = {
+            method: 'post',
+            url: requestUrl,
+            data: {
+                ...difyQuery,
+            },
+            headers,
+        }
+
+        const res = await axios(difyQueryData);
+
+        const openAiFormat = convertBlockingToOpenAiFormat(res.data);
+
+        this.logger.log(`dify query ${JSON.stringify(res.data)}`);
+        this.logger.log(`openAiFormat ${JSON.stringify(openAiFormat)}`);
+
+        return openAiFormat;
+        // this.logger.log(`dify query ${JSON.stringify(difyQuery)}`);
+
+        // response.write(Buffer.from(JSON.stringify(openAiFormat)));
+        // response.end();
     }
 }
