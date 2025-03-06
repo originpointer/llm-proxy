@@ -19,6 +19,7 @@ export class DifyChatService {
      */
     async chatMessages(difyQuery: DifyQueryDto, response: Response, apiKey?: string): Promise<void> {
         const usedApiKey = apiKey || this.difyApiKey;
+        this.logger.log(`dify query ${JSON.stringify(difyQuery)}`);
 
         if (!usedApiKey) {
             this.logger.error('未提供Dify API密钥');
@@ -38,21 +39,22 @@ export class DifyChatService {
             response.setHeader('Cache-Control', 'no-cache');
             response.setHeader('Connection', 'keep-alive');
             response.flushHeaders();
+            const data = difyQuery;
 
-            const data = {
-                "inputs": {},
-                "query": "What are the specs of the iPhone 13 Pro Max?",
-                "response_mode": "streaming",
-                "conversation_id": "",
-                "user": "abc-123",
-                "files": [
-                    {
-                        "type": "image",
-                        "transfer_method": "remote_url",
-                        "url": "https://cloud.dify.ai/logo/logo-site.png"
-                    }
-                ]
-            }
+            // const data = {
+            //     "inputs": {},
+            //     "query": "What are the specs of the iPhone 13 Pro Max?",
+            //     "response_mode": "streaming",
+            //     "conversation_id": "",
+            //     "user": "abc-123",
+            //     "files": [
+            //         {
+            //             "type": "image",
+            //             "transfer_method": "remote_url",
+            //             "url": "https://cloud.dify.ai/logo/logo-site.png"
+            //         }
+            //     ]
+            // }
 
             const dataStr = JSON.stringify(data);
             const requestUrl = `${this.difyApiUrl}/v1/chat-messages`;
@@ -78,6 +80,7 @@ export class DifyChatService {
             let newConversationId = null;
             // 将Dify响应流直接传输到客户端
             stream.on('data', (chunk) => {
+                // this.logger.log(`chunk ${chunk}`);
                 buffer += chunk.toString();
 
                 let lines = buffer.split('\n\n');
@@ -99,6 +102,7 @@ export class DifyChatService {
 
                         if (openAIFormatted) {
                             const openaiData = `data: ${JSON.stringify(openAIFormatted)}\n\n`;
+                            this.logger.log(`openaiData ${openaiData}`);
                             const openaiDataBuffer = Buffer.from(openaiData);
                             response.write(openaiDataBuffer);
                         }

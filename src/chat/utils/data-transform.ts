@@ -11,18 +11,20 @@ export function convertToOpenAIFormat(difyData) {
             model: 'dify-proxy',
             choices: [{
                 delta: {
-                    content: difyData.answer || ''
+                    content: difyData.answer || '',
+                    role: 'assistant'
                 },
                 index: 0,
-                finish_reason: null
+                finish_reason: null,
+                stream_options: { include_usage: true }
             }],
-            stream_options: { include_usage: true }  // 将 stream_options 移到 choices 数组外
+            // 将 stream_options 移到 choices 数组外
         };
 
         // 如果是第一个消息块，添加 role 字段
-        if (difyData.id === 0 || difyData.answer === '') {
-            set(response, 'choices.0.delta.Role', 'assistant');// 使用大写的 Role
-        }
+        // if (difyData.id === 0 || difyData.answer === '') {
+        //     set(response, 'choices.0.delta.Role', 'assistant');// 使用大写的 Role
+        // }
 
         return response;
     } else if (difyData.event === 'message_end') {
