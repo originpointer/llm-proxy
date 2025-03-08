@@ -15,7 +15,7 @@ export class DifyFileDto {
 export class DifyQueryDto {
     // 未知
     @IsObject()
-    @IsOptional()
+    @IsNotEmpty()
     inputs: any;
     
     @IsString()
@@ -25,6 +25,10 @@ export class DifyQueryDto {
     @IsString()
     @IsNotEmpty()
     response_mode: string; // 返回值类型 已知有 streaming（流式）
+
+    @IsString()
+    @IsOptional()
+    conversation_id?: string; // 会话ID
     
     @IsString()
     @IsNotEmpty()

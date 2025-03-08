@@ -1,0 +1,14 @@
+{
+    "messages": [
+      { "content": "", "role": "system" },
+      { "role": "user", "content": "喂，你好。" },
+      { "role": "assistant", "content": "你好！很高兴见到你。有什么我可以帮忙的吗？" },
+      { "role": "user", "content": "喂。" },
+      { "role": "assistant", "content": " " },
+      { "role": "user", "content": "请问你叫什么名字？" }
+    ],
+    "stream": true,
+    "stream_options": { "include_usage": true },
+    "max_token": 1024,
+    "model": "dify"
+  }

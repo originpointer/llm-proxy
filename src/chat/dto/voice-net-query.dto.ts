@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString, ValidateNested } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsObject, IsOptional, IsString, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class MessageDto {
@@ -11,7 +11,13 @@ export class MessageDto {
     content?: string; // 对话内容
 }
 
-export class LLMQueryDto {
+export class StreamOptionsDto {
+    @IsBoolean()
+    @IsOptional()
+    include_usage?: boolean; // 填入值: true
+}
+
+export class VoiceNetQueryDto {
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => MessageDto)
@@ -22,9 +28,9 @@ export class LLMQueryDto {
     @IsOptional()
     stream?: boolean; // 填入值: true
 
-    @IsNumber()
+    @IsObject()
     @IsOptional()
-    temperature?: number; // 透传 StartVoiceChat.LLMConfig.temperature
+    stream_options?: StreamOptionsDto; // 透传 StartVoiceChat.LLMConfig.StreamOptions
 
     @IsNumber()
     @IsOptional()
@@ -32,9 +38,5 @@ export class LLMQueryDto {
 
     @IsString()
     @IsNotEmpty()
-    model: string; // 透传 StartVoiceChat.LLMConfig.ModelName
-
-    @IsNumber()
-    @IsOptional()
-    top_p?: number; // 透传 StartVoiceChat.LLMConfig.TopP
+    model: string; // 用户id
 }
